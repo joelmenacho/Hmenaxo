@@ -1,12 +1,18 @@
-import Header from './components/Header';
 
-import './App.css';
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import Home from "./views/Home";
+import Login from "./views/Login";
+
 
 function App() {
   return (
-    <div className="App">
-      <Header/>
-    </div>
+    <BrowserRouter>
+    <Routes>
+      <Route name="home" path='/' exact  element={<Home/>}  />
+      <Route name="login" path='/login' exact  element={<Login/>}  />
+    </Routes>
+    </BrowserRouter>
+ 
   );
 }
 
