@@ -1,20 +1,17 @@
 import React from "react";
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import Carousel from '../components/Carousel'
-import Product from '../components/Product';
+import LoginCard from '../components/LoginCard';
 
 
-const Home = () => {
+
+const Login = () => {
     return (
         <div className="App">
         <Header/>
         <main>
-          <Carousel/>
-  
           <div>
-          <Product/>  
-          <Product/> 
+            <LoginCard/>
           </div>
         </main>
         <Footer/>
@@ -22,4 +19,4 @@ const Home = () => {
     )
 }
 
-export default Home;
+export default Login;
