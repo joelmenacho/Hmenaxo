@@ -5,7 +5,6 @@ import Login from "./views/Login";
 import Register from "./views/Register";
 import VerifyUser from "./views/VerifyUser";
 
-
 function App() {
   return (
     <BrowserRouter>
