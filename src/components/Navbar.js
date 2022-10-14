@@ -15,14 +15,20 @@ import {
   useDisclosure,
   useColorModeValue,
   Stack,
+  Image,
+  Input,
+  InputGroup,
+  InputRightElement
+
 } from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon} from '@chakra-ui/icons';
+import { HamburgerIcon, CloseIcon, SearchIcon} from '@chakra-ui/icons';
 import {useDispatch, useSelector } from "react-redux";
 import {logoutUser, getInitialize} from "../redux/authSlice";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { MdLogin } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
+// import { Link as ReachLink } from "@react/router";
 
 
 const Links = ['Dashboard', 'Projects', 'Team'];
@@ -64,15 +70,15 @@ export default function Simple() {
 
 
   useEffect( () => {
-    if (currentUser?.email){
+    if (!currentUser?.user?.email){
       dispatch(getInitialize());
     }
-  }, [dispatch, currentUser])
+  }, [dispatch])
 
 
   return (
     <>
-      <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
+      <Box bg="#fff159" px={4}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <IconButton
             size={'md'}
@@ -82,7 +88,11 @@ export default function Simple() {
             onClick={isOpen ? onClose : onOpen}
           />
           <HStack spacing={8} alignItems={'center'}>
-            <Box>Logo</Box>
+            <Box>
+              <Link href="/">
+                <Image src="/assets/image/logo_ml.png" />
+              </Link>
+            </Box>
             <HStack
               as={'nav'}
               spacing={4}
@@ -91,7 +101,18 @@ export default function Simple() {
                 <NavLink key={link}>{link}</NavLink>
               ))}
             </HStack>
+
+            <Box>
+              <InputGroup>
+                <InputRightElement pointerEvents='none'
+                children={<SearchIcon/>} />
+                  <Input placeholder='Buscar productos..' bg="white" size={"lg"}/>
+
+              </InputGroup>
+            </Box>
           </HStack>
+
+
           <Flex alignItems={'center'}>
 
             {!isLogin &&
@@ -117,11 +138,13 @@ export default function Simple() {
                 minW={0}>
                 <Avatar
                   size={'md'}
-                  src={'http://localhost:8000' + currentUser?.image_profile}
+                  src={'http://localhost:8000/media/' + currentUser?.image_profile}
                 />
               </MenuButton>
               <MenuList>
-                <MenuItem>Link 1</MenuItem>
+                {currentUser?.user?.email &&
+                  <MenuItem onClick={() => navigate("/perfil")}>Perfil</MenuItem>                
+                }
                 <MenuItem>Link 2</MenuItem>
                 <MenuDivider />
                 <MenuItem onClick={logoutUserBtn} >Cerrar sesión</MenuItem>
