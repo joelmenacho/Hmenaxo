@@ -36,12 +36,13 @@ import {register, getInitialize} from "../redux/authSlice";
                             };
     const onSubmit = (values) => {
       dispatch(register({
-        'email': values.email,
-        'password': values.password,
-        'firstName': values.firstName,
-        'lastName': values.lastName,
-        'password_confirm': values.password_confirm,
-        'dni': values.dni
+        user_email: values.email,
+        password: values.password,
+        firstName: values.firstName,
+        lastName: values.lastName,
+        password_confirm: values.password_confirm,
+        dni: values.dni,
+        user: values.email
       }))
     }
 

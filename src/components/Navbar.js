@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import {
   Box,
   Flex,
@@ -16,7 +16,14 @@ import {
   useColorModeValue,
   Stack,
 } from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
+import { HamburgerIcon, CloseIcon} from '@chakra-ui/icons';
+import {useDispatch, useSelector } from "react-redux";
+import {logoutUser, getInitialize} from "../redux/authSlice";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { MdLogin } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
+
 
 const Links = ['Dashboard', 'Projects', 'Team'];
 
@@ -35,7 +42,33 @@ const NavLink = ({ children }: { children: ReactNode }) => (
 );
 
 export default function Simple() {
+  const {isLogin, currentUser} = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const notify = () => toast.success("sesión finalizada");
+
+  const logoutUserBtn = () => {
+    notify();
+    dispatch(logoutUser());
+  }
+
+  const LoginStart = () => {
+    navigate('/login')
+  }
+
+  const RegisterStart = () => {
+    navigate('/registro')
+  }
+
+
+  useEffect( () => {
+    if (currentUser?.email){
+      dispatch(getInitialize());
+    }
+  }, [dispatch, currentUser])
+
 
   return (
     <>
@@ -60,6 +93,21 @@ export default function Simple() {
             </HStack>
           </HStack>
           <Flex alignItems={'center'}>
+
+            {!isLogin &&
+              <Stack direction='row' spacing={4}>
+              <Button  onClick={LoginStart} leftIcon={<MdLogin />} colorScheme='teal' variant='solid'>
+                Iniciar sesión
+              </Button>
+              <Button onClick={RegisterStart} colorScheme='teal' variant='outline'>
+                Crear cuenta
+              </Button>
+            </Stack>
+            }
+
+            {(isLogin && currentUser) && 
+            <>
+            <Box mr={"30px"} >{currentUser?.user?.username}</Box>
             <Menu>
               <MenuButton
                 as={Button}
@@ -68,19 +116,20 @@ export default function Simple() {
                 cursor={'pointer'}
                 minW={0}>
                 <Avatar
-                  size={'sm'}
-                  src={
-                    'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
-                  }
+                  size={'md'}
+                  src={'http://localhost:8000' + currentUser?.image_profile}
                 />
               </MenuButton>
               <MenuList>
                 <MenuItem>Link 1</MenuItem>
                 <MenuItem>Link 2</MenuItem>
                 <MenuDivider />
-                <MenuItem>Link 3</MenuItem>
+                <MenuItem onClick={logoutUserBtn} >Cerrar sesión</MenuItem>
               </MenuList>
             </Menu>
+            </>
+            }
+           
           </Flex>
         </Flex>
 

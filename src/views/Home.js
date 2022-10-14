@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Carousel from '../components/Carousel'
 import Product from '../components/Product';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const Home = () => {
@@ -13,11 +14,12 @@ const Home = () => {
           <Carousel/>
   
           <div>
-          <Product/>  
+          <Product/>
           <Product/> 
           </div>
         </main>
         <Footer/>
+        <ToastContainer/>
       </div>
     )
 }
